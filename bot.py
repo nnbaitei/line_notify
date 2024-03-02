@@ -87,8 +87,8 @@ def thu(curr_hr, curr_min):
 
 def fri(curr_hr, curr_min):
     df = readfile()
-    t_hr = 18
-    if curr_hr - t_hr == 0 and curr_min == 46:
+    t_hr = 8
+    if curr_hr - t_hr == 0 and curr_min == 15:
         df = df[df['time'] == '8:00-11:00']
         df = df[df['day'] == 'Fri']
         code = df['code'].values[0]
