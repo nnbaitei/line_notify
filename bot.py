@@ -18,7 +18,7 @@ def line_notify(code, sub, room, teacher):
 def mon(curr_hr, curr_min):
     df = readfile()
     t_hr = 13
-    if curr_hr - t_hr == 0 and curr_min == 15 and curr_min == 15:
+    if curr_hr - t_hr == -1 and curr_min == 45:
         df = df[df['time'] == '13:00-18:00']
         df = df[df['day'] == 'Mon']
         code = df['code'].values[0]
@@ -31,7 +31,7 @@ def tue(curr_hr, curr_min):
     df = readfile()
     t1_hr = 8
     t2_hr = 16
-    if curr_hr - t1_hr == 0 and curr_min == 15:
+    if curr_hr - t1_hr == -1 and curr_min == 45:
         df = df[df['time'] == '8:00-11:00']
         df = df[df['day'] == 'Tue']
         code = df['code'].values[0]
@@ -40,7 +40,7 @@ def tue(curr_hr, curr_min):
         teacher = df['teacher'].values[0]
         line_notify(code, sub, room, teacher)
         
-    if curr_hr - t2_hr == 0 and curr_min == 15:
+    if curr_hr - t2_hr == -1 and curr_min == 45:
         df = df[df['time'] == '16:00-19:00']
         df = df[df['day'] == 'Tue']
         code = df['code'].values[0]
@@ -53,7 +53,7 @@ def wed(curr_hr, curr_min):
     df = readfile()
     t1_hr = 8
     t2_hr = 13
-    if curr_hr - t1_hr == 0 and curr_min == 15:
+    if curr_hr - t1_hr == -1 and curr_min == 45:
         df = df[df['time'] == '8:00-11:00']
         df = df[df['day'] == 'Wed']
         code = df['code'].values[0]
@@ -62,7 +62,7 @@ def wed(curr_hr, curr_min):
         teacher = df['teacher'].values[0]
         line_notify(code, sub, room, teacher)
         
-    if curr_hr - t2_hr == 0 and curr_min == 15:
+    if curr_hr - t2_hr == -1 and curr_min == 45:
         df = df[df['time'] == '13:00-17:00']
         df = df[df['day'] == 'Wed']
         code = df['code'].values[0]
@@ -75,7 +75,7 @@ def wed(curr_hr, curr_min):
 def thu(curr_hr, curr_min):
     df = readfile()
     t_hr = 8
-    if curr_hr - t_hr == 0 and curr_min == 15:
+    if curr_hr - t_hr == -1 and curr_min == 45:
         df = df[df['time'] == '8:00-11:00']
         df = df[df['day'] == 'Thu']
         code = df['code'].values[0]
@@ -88,7 +88,7 @@ def thu(curr_hr, curr_min):
 def fri(curr_hr, curr_min):
     df = readfile()
     t_hr = 8
-    if curr_hr - t_hr == 0 and curr_min == 15:
+    if curr_hr - t_hr == -1 and curr_min == 45:
         df = df[df['time'] == '8:00-11:00']
         df = df[df['day'] == 'Fri']
         code = df['code'].values[0]
