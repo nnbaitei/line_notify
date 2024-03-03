@@ -26,6 +26,7 @@ def mon(curr_hr, curr_min):
         room = df['room'].values[0]
         teacher = df['teacher'].values[0]
         line_notify(code, sub, room, teacher)
+        time.sleep(60)
 
 def tue(curr_hr, curr_min):
     df = readfile()
@@ -39,6 +40,7 @@ def tue(curr_hr, curr_min):
         room = df['room'].values[0]
         teacher = df['teacher'].values[0]
         line_notify(code, sub, room, teacher)
+        time.sleep(60)
         
     if curr_hr - t2_hr == -1 and curr_min == 45:
         df = df[df['time'] == '16:00-19:00']
@@ -48,6 +50,7 @@ def tue(curr_hr, curr_min):
         room = df['room'].values[0]
         teacher = df['teacher'].values[0]
         line_notify(code, sub, room, teacher)
+        time.sleep(60)
 
 def wed(curr_hr, curr_min):
     df = readfile()
@@ -61,6 +64,7 @@ def wed(curr_hr, curr_min):
         room = df['room'].values[0]
         teacher = df['teacher'].values[0]
         line_notify(code, sub, room, teacher)
+        time.sleep(60)
         
     if curr_hr - t2_hr == -1 and curr_min == 45:
         df = df[df['time'] == '13:00-17:00']
@@ -70,6 +74,7 @@ def wed(curr_hr, curr_min):
         room = df['room'].values[0]
         teacher = df['teacher'].values[0]
         line_notify(code, sub, room, teacher)
+        time.sleep(60)
         
 
 def thu(curr_hr, curr_min):
@@ -83,6 +88,7 @@ def thu(curr_hr, curr_min):
         room = df['room'].values[0]
         teacher = df['teacher'].values[0]
         line_notify(code, sub, room, teacher)
+        time.sleep(60)
         
 
 def fri(curr_hr, curr_min):
@@ -106,7 +112,7 @@ while True:
 
     if curr_day == "Mon":
         mon(curr_hr, curr_min)
-    if curr_day == "Tue":
+    if curr_day == "Sun":
         tue(curr_hr, curr_min)
     if curr_day == "Wed":
         wed(curr_hr, curr_min)
