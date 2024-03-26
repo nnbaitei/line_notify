@@ -3,6 +3,12 @@ import datetime
 import requests
 import time
 import schedule
+from inputimeout import inputimeout
+from threading import Timer 
+import sys
+import pyautogui
+import queue
+
 
 def readfile():
     global df
@@ -82,6 +88,7 @@ def find_class(df, day):
 
 def select_class(df):
     day = input("เลือกวัน\nกด 'm' คาบวันจันทร์\nกด 't' คาบวันอังคาร\nกด 'w' คาบวันพุธ\nกด 'th' คาบวันพฤหัส\nกด 'f' คาบวันศุกร์\n")
+    # time.sleep(5)
     if day == 'm':
         day = 'Mon'
     if day == 't':
@@ -97,39 +104,60 @@ def select_class(df):
     line_notify(message)
 
 def job():
+    message = ['คาบเรียนวันนี้\n']
     curr_day = datetime.datetime.now().strftime("%a")
     df_day_index = df[df['day'] == curr_day].index
     df_day = df[df['day'] == curr_day]
     for i in df_day_index:
-        message = f"วัน {df_day['day'][i]} เวลา {df_day['time'][i]}\nวิชา {df_day['class'][i]}\nสถานที่ {df_day['room'][i]}\nอาจารย์ผู้สอน {df_day['teacher'][i]}"
-        print(message)
-        line_notify(message)
+        text = f"วัน {df_day['day'][i]} เวลา {df_day['time'][i]}\nวิชา {df_day['class'][i]}\nสถานที่ {df_day['room'][i]}\nอาจารย์ผู้สอน {df_day['teacher'][i]}\n\n"
+        message.append(text)
+    print(''.join(message))
+    line_notify(''.join(message))
     time.sleep(60)
+
+def time_over():
+    print("\nYour writing time is over!!\nEnter / to quit the program")
+    sys.exit()
+
+def helper_function(q):
+    print("กด 'x' เพื่อดูคาบเรียนถัดไป\nกด 'y' คาบเรียนปัจจุบัน\nกด 'o' คาบเรียนก่อนหน้า\nกด 'a' แสดงตารางทั้งหมด\nกด 'p' เลือกวัน และเวลา\nกด 'e' ออกจากโปรแกรม\n**ไม่ต้องกด Enter**\n")
+    user_input = input()
+    # print(user_input)
+
+    q.put(user_input)
 
 def main():
     df = readfile()
+    
     while True:
         schedule.run_pending()
         now = datetime.datetime.now()
-        user_input = input("กด 'x' เพื่อดูคาบเรียนถัดไป\nกด 'y' คาบเรียนปัจจุบัน\nกด 'o' คาบเรียนก่อนหน้า\nกด 'a' แสดงตารางทั้งหมด\nกด 'p' เลือกวัน และเวลา\nกด 'e' ออกจากโปรแกรม\n").lower()
-        if user_input == 'x':
-            find_next_class(df, now)
-        elif user_input == 'y':
-            check_current_class(df, now)
-        elif user_input == 'o':
-            find_previous_class(df, now)
-        # elif user_input == 'n':
-        #     notify_for_classes(df)
-        elif user_input == 'a':
-            all_class(df)
-        elif user_input == 'p':
-            select_class(df)
-        elif user_input == 'e':
-            print("Exiting program.")
-            break
-        else:
-            print("Invalid input. Please try again.")
-        time.sleep(1)  # Add delay to avoid spamming
+        q = queue.Queue()
+        t = Timer(interval=1, function=helper_function, args=(q,))
+        t.start()
+        time.sleep(5)
+        t.cancel()
+        pyautogui.press('enter')
+        user_input = q.get()
+        if user_input is not None:
+            if user_input == 'x':
+                find_next_class(df, now)
+            elif user_input == 'y':
+                check_current_class(df, now)
+            elif user_input == 'o':
+                find_previous_class(df, now)
+            # elif user_input == 'n':
+            #     notify_for_classes(df)
+            elif user_input == 'a':
+                all_class(df)
+            elif user_input == 'p':
+                select_class(df)
+            elif user_input == 'e':
+                print("Exiting program.")
+                break
+            else:
+                print("Invalid input. Please try again.")
+            time.sleep(1)  # Add delay to avoid spammingp
 
 if __name__ == "__main__":
     schedule.every().day.at("08:00").do(job)
